@@ -34,7 +34,7 @@ while i<3:
             calib_data[i,k] += image[i,j,k]
             k += 1
         j += 1
-    plt.plot(calib_data[i])
+#    plt.plot(calib_data[i])
     i += 1
 
 #%% centroid of first peak
@@ -129,7 +129,12 @@ while i<400:
     wavelength[i] = P(pixels[i])
     i += 1
 
+plt.title('Wavelength vs Pixel')
+plt.xlabel('Pixel')
+plt.ylabel('Wavelength (nm)')
 plt.plot(wavelength)
+
+#plt.savefig('wavelength_vs_pixel.png')
 
 #%% test peak and wavelength
 
@@ -158,19 +163,26 @@ plt.plot(NIST)
 
 #%% normalize NIST and QTH
 
+plt.title('Normalized NIST and QTH Intensities')
+plt.xlabel('Pixel')
+plt.ylabel('Normalized Relative Intensities')
+
 norm_NIST = np.zeros([400])
 i = 0
 while i<400:
     norm_NIST[i] = NIST[i] / np.amax(NIST)
     i += 1
-plt.plot(norm_NIST)
+plt.plot(norm_NIST, label='NIST')
 
 norm_QTH = np.zeros([512])
 j = 0
 while j<512:
     norm_QTH[j] = calib_data[2,j] / np.amax(calib_data[2])
     j += 1
-plt.plot(norm_QTH)
+plt.plot(norm_QTH, label='QTH')
+
+plt.legend()
+#plt.savefig('norm-NIST-QTH.png')
 
 #%% ratio of calibration
 
@@ -180,7 +192,11 @@ while i<400:
     ratio[i] = norm_QTH[i] / norm_NIST[i]
     i += 1
 
+plt.title('Ratio of Calibration')
+plt.xlabel('Pixel')
+plt.ylabel('Ratio')
 plt.plot(ratio)
+#plt.savefig('ratio.png')
 
 #%% load real data
 
@@ -229,9 +245,10 @@ while i<3:
 
 plt.title('Carbon Centered at 650nm')
 plt.xlabel('Wavelength')
-plt.plot(wavelength, norm_data[2], color='blue', label='d=38cm')  
-plt.plot(wavelength, norm_data[0], color='orange', label='d=39cm')
-plt.plot(wavelength, norm_data[1], color='green', label='d=40cm')
+plt.ylabel('Relative Intensities')
+plt.plot(wavelength, norm_data[2] / 1e5, color='blue', label='d=38cm')  
+plt.plot(wavelength, norm_data[0] / 1e5, color='orange', label='d=39cm')
+plt.plot(wavelength, norm_data[1] / 1e5, color='green', label='d=40cm')
 plt.legend()
 #plt.savefig('carbon.center=650.jpg')
 b=np.amax(norm_data[1])
@@ -284,18 +301,20 @@ plt.text(613, 3.5, int(wavelength[int(maxes[2])]), color = 'blue')
 
 #plt.savefig('poly-fit.png')
 
-#%% print max index
+#%% Plot with max wavelength and calculate temperature
 
-print(maxes)
-
-#%% Plot with max wavelength
+temp = np.zeros([3])
+i=0
+while i<3:
+    temp[i] = 2.898e6 / wavelength[int(maxes[i])]
+    print(temp[i])
+    i += 1
 
 max_wavelengths = np.zeros([3])
 i = 0
 while i<3:
     max_wavelengths[i] = wavelength[int(maxes[i])]
     i += 1
-
 
 plt.title('Carbon Centered at 650nm')
 plt.xlabel('Wavelength')
