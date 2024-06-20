@@ -94,13 +94,25 @@ subset3 = calib_data[1,start:end]
 plt.plot(range(start,end), subset3)
 plt.axvline(x=Peak3, color='red')
 
+#%% plot calibration data
+
+plt.title('Calibration Emission Spectra')
+plt.xlabel('Pixels')
+plt.ylabel('Relative Intensities')
+plt.plot(calib_data[0], label='Kr')
+plt.plot(calib_data[1], label='Ne')
+plt.plot(calib_data[2], label='QTH')
+plt.text(32, 1.6e6, '587nm')
+plt.text(220, 2.4e6, '640nm')
+plt.text(410, 0.4e6, '703nm')
+plt.legend()
+#plt.savefig('calibration-data.png')
+
 #%% wavelength vs pixel
 
 pixel_peaks = np.array([Peak1,Peak2,Peak3])
 wavelength_peaks = np.array([587.1,640.23,703.24])
 pixels = np.zeros([512])
-
-#x2 is now pixels
 
 i = 0
 while i<512:
@@ -122,17 +134,6 @@ plt.plot(wavelength)
 #%% test peak and wavelength
 
 print(wavelength[252])
-
-#%% normalize wavelength curve
-
-norm_wavelength = np.zeros([400])
-i = 0
-while i<400:
-    norm_wavelength[i] = wavelength[i] / np.amax(wavelength)
-    i += 1
-
-plt.plot(norm_wavelength)
-
 
 #%% NIST polynomial wavelength
 
@@ -240,8 +241,10 @@ print(b)
 
 data_subsection = np.zeros([3,200])
 x_subsection = np.zeros([3,200])
+wavelength_subsection = np.zeros([200])
 poly = np.zeros([3,200])
 maxes = np.zeros([3])
+
 
 i = 0
 while i < 3:
@@ -249,6 +252,8 @@ while i < 3:
     while j < 200:
         data_subsection[i,j] = norm_data[i,j]
         x_subsection[i,j] = j+1
+        if(i == 0):
+            wavelength_subsection[j] = wavelength[j]
         j += 1
     a = np.polyfit(x_subsection[i], data_subsection[i], 3) # a[0]*x^2 + a[1]*x + a[2]
     A = np.poly1d(a) # polynomial function with a[i] coefficients (A[x] = a[0]*x^2 + a[1]*x + a[2])
@@ -257,17 +262,27 @@ while i < 3:
         poly[i,k] = A(x_subsection[i,k])
         k += 1
     maxes[i] = np.argmax(poly[i])
-#    plt.plot(poly[i])
-    plt.plot(data_subsection[i], color = 'grey')
-#    plt.axvline(x=maxes[i])
     i += 1
 
-plt.plot(poly[0], color = 'orange')
-plt.plot(poly[1], color = 'green')
-plt.plot(poly[2], color = 'blue')
+i = 0
+while i < 3:
+    plt.plot(wavelength_subsection, data_subsection[i] / 1e5, color='grey')
+    print(wavelength[int(maxes[i])])
+    i += 1
+
+plt.title('Polynomial fits and Max Wavelengths')
+plt.xlabel('Wavelength (nm)')
+plt.plot(wavelength_subsection, poly[0] / 1e5, color = 'orange')
+plt.plot(wavelength_subsection, poly[1] / 1e5, color = 'green')
+plt.plot(wavelength_subsection, poly[2] / 1e5, color = 'blue')
 plt.axvline(x=maxes[0], color = 'orange')
 plt.axvline(x=maxes[1], color = 'green')
 plt.axvline(x=maxes[2], color = 'blue')
+plt.text(603, 3.5, int(wavelength[int(maxes[0])]), color = 'orange')
+plt.text(596, 3.5, int(wavelength[int(maxes[1])]), color = 'green')
+plt.text(613, 3.5, int(wavelength[int(maxes[2])]), color = 'blue')
+
+#plt.savefig('poly-fit.png')
 
 #%% print max index
 
@@ -338,10 +353,7 @@ plt.axvline(x=609, color='orange')
 plt.plot(wavelengths*1e9, intensity4814*8.84e-7-8.85e6, linewidth='2',linestyle='--', color='blue', label='T=4814K' ) # 6000K blue line
 plt.axvline(x=602, color='blue')
 plt.legend()
-#plt.savefig('temp for carbon.center=650.jpg')
-
-
-
+#plt.savefig('temp_for_carbon.center=650.jpg')
 
 #%%
 
