@@ -24,7 +24,7 @@ The wavelength calibration acts as a relation between x-axis pixels and waveleng
  - The next step is to calculate the pixel values of emission lines from the Neon and Krypton lamp that occur at "known" wavelengths. This is done by calculating the centriod of a region in which the emission line lies, and let's us relate pixel locations to wavelength locations. The three emission lines calculated here are Krypotn's 587nm line, and Neon's 640nm and 703nm lines, seen in the figure below.
  - The final step is to use these three points to make a second degree polynomial, stored as an array, to act as the relationship between pixel and wavelength, also seen below.
 
-![Calibration Data](calibration-data.png) ![Wavelength vs Pixel](wavelength_vs_pixel.png)
+![Calibration Data](plots/calibration-data.png) ![Wavelength vs Pixel](plots/wavelength_vs_pixel.png)
 
 
 ## Relative Intensity calibration
@@ -34,7 +34,7 @@ To calibrate the intensity of the experimental data, the QTH lamp is used. This 
  - This calculation starts off by creating an array that corresponds to the NIST polynomial, which is just a polynomial form of the known QTH emission spectrum. This polynomial, along with the measured QTH spectrum are then normalized to unity, as seen below.
  - Next, a "ratio of calibration" is calculated by dividing the MEASURED emission spectrum of the QTH lamp by the KNOWN emission spectrum (the NIST polynomial). This can then be easily applied to the real data (by dividing the real data by this ratio) to ensure the relative intensities measured by the spectrometer are accurate.
 
-![NIST and QTH spectrum](norm-NIST-QTH.png) ![Ratio of Calibration](ratio.png)
+![NIST and QTH spectrum](plots/norm-NIST-QTH.png) ![Ratio of Calibration](plots/ratio.png)
 
 
 ## Calibrate and Plot Real Data
@@ -44,7 +44,7 @@ The last part of this code is to use the two calibrations on the real data, plot
  - This is done by loading in the real data, which are three additional .tiff files (each corresponding to a different event) plus an extra background .tiff file. The background image is taken with all the lights in the room switched off and serves as a control which gets subtracted out of the data of interest. A sum was then done over the vertical pixels to make each image into a 1-D array.
  - Then the intensity calibration was applied by dividing the real data arrays by the "ratio of calibration", and finally the data was plotted with the wavelenth function as the x-axis. This plot can be seen below.
 
-![Calibrated real data](carbon.center=650.jpg)
+![Calibrated real data](plots/carbon.center=650.jpg)
 
 
 ## Calculate Max Wavelength and plot
@@ -53,4 +53,4 @@ To calculate the peaks of each emission line, a third degree polynomial fit was 
 
 To calculate the temperatures, a simple calculation was performed of Wien's law relating max wavelength to temperature.
 
-![Polynomial fit](poly-fit.png)
+![Polynomial fit](plots/poly-fit.png)
