@@ -44,7 +44,7 @@ The last part of this code is to use the two calibrations on the real data, plot
  - This is done by loading in the real data, which are three additional .tiff files (each corresponding to a different event) plus an extra background .tiff file. The background image is taken with all the lights in the room switched off and serves as a control which gets subtracted out of the data of interest. A sum was then done over the vertical pixels to make each image into a 1-D array.
  - Then the intensity calibration was applied by dividing the real data arrays by the "ratio of calibration", and finally the data was plotted with the wavelenth function as the x-axis. This plot can be seen below.
 
-![Calibrated real data](carbon-650center-plot.jpg)
+![Calibrated real data](carbon.center=650.jpg)
 
 
 ## Calculate Max Wavelength and plot
