@@ -11,7 +11,7 @@ This program works in three main steps:
 1 - Calibrate wavelengths by making a relation between x-pixel number and a wavelength
 2 - Calibrate the relative intensities by creating a correction ration from a "known" spectral profile (the QTH lamp)
 3 - Apply these calibrations to the real data and plot the calibrated data
-4 - Calculate a peak wavelength and corresponding temperature (via Wein's law) of each plasma
+4 - Calculate a peak wavelength and corresponding temperature (via Wien's law) of each plasma
 
 Details of these steps can be found below.
 
@@ -22,17 +22,19 @@ The wavelength calibration acts as a relation between x-axis pixels and waveleng
 
  - The first step in the wavelength calibration is to load in the calibration data (three .tiff files: Ne, Kr, and QTH) and put it into 1-D arrays by summing over the y-axis intensities.
  - The next step is to calculate the pixel values of emission lines from the Neon and Krypton lamp that occur at "known" wavelengths. This is done by calculating the centriod of a region in which the emission line lies, and let's us relate pixel locations to wavelength locations. The three emission lines calculated here are Krypotn's 587nm line, and Neon's 640nm and 703nm lines, seen in the figure below.
- - The final step is to use these three points to make a second degree polynomial, stored as an array, to act as the relationship between pixel and wavelength.
+ - The final step is to use these three points to make a second degree polynomial, stored as an array, to act as the relationship between pixel and wavelength, also seen below.
 
-![Calibration Data](calibration-data.png)
+![Calibration Data](calibration-data.png) ![Wavelength vs Pixel](wavelength_vs_pixel.png)
 
 
 ## Relative Intensity calibration
 
 To calibrate the intensity of the experimental data, the QTH lamp is used. This lamp has a very well known/measured emission spectrum over the wavelength region of interest, so it can serve as an indicator of how accurate the measured intensities/counts from the images are, and if it is over or under detecting intensity in every region.
 
- - This calculation starts off by creating an array that corresponds to the NIST polynomial, which is just a polynomial form of the known QTH emission spectrum. This polynomial, along with the measured QTH spectrum are then normalized to unity.
- - Lastly, a "ratio of calibration" is calculated by dividing the MEASURED emission spectrum of the QTH lamp by the KNOWN emission spectrum (the NIST polynomial). This can then be easily applied to the real data (by dividing the real data by this ratio) to ensure the relative intensities measured by the spectrometer are accurate.
+ - This calculation starts off by creating an array that corresponds to the NIST polynomial, which is just a polynomial form of the known QTH emission spectrum. This polynomial, along with the measured QTH spectrum are then normalized to unity, as seen below.
+ - Next, a "ratio of calibration" is calculated by dividing the MEASURED emission spectrum of the QTH lamp by the KNOWN emission spectrum (the NIST polynomial). This can then be easily applied to the real data (by dividing the real data by this ratio) to ensure the relative intensities measured by the spectrometer are accurate.
+
+![NIST and QTH spectrum](norm-NIST-QTH.png) ![Ratio of Calibration](ratio.png)
 
 
 ## Calibrate and Plot Real Data
@@ -49,6 +51,6 @@ The last part of this code is to use the two calibrations on the real data, plot
 
 To calculate the peaks of each emission line, a third degree polynomial fit was applied to the region right around the peak of each emission spectrum, and the location of the max was recorded. These polynomials can be seen below, along with the data plots and the maximum wavelengths.
 
-To calculate the temperatures, a simple calculation was performed of Wein's law relating max wavelength to temperature.
+To calculate the temperatures, a simple calculation was performed of Wien's law relating max wavelength to temperature.
 
 ![Polynomial fit](poly-fit.png)
