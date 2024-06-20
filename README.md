@@ -3,7 +3,7 @@
 This python program was one of many used for calibrating and analysing spectral profiles of plasma plumes taken from a variety of target material. This example specifically was used for a carbon (graphite) target, with the spectrometer centered at a wavelength of 650nm. It should be noted that the beginning of this code uses Neon and Krypton calibration lamps to calibrate the wavelengths (x-axis of final plots) and  Quartz-Tungsten-Halogen (QTH) lamp to calibrate the relative intensities measured in the spectrometer (y-axis in the final plot). For different spectrometers, center wavelengths, and calibration lamps, the calculations of emission peaks will have to be adjusted accordingly.
 
 
-## How it Works
+## How It Works
 
 This program was made to take in data in the form of .tiff files. These files are pixel arrays (images), in this case 78x512, with each pixel storing a "count" or relative intensity of photons incident on that pixel. Because the images are taken after the light passes through a spectrometer, the x-axis of these images correspond to wavelengths.
 
@@ -27,7 +27,7 @@ The wavelength calibration acts as a relation between x-axis pixels and waveleng
 ![Calibration Data](plots/calibration-data.png) ![Wavelength vs Pixel](plots/wavelength_vs_pixel.png)
 
 
-## Relative Intensity calibration
+## Relative Intensity Calibration
 
 To calibrate the intensity of the experimental data, the QTH lamp is used. This lamp has a very well known/measured emission spectrum over the wavelength region of interest, so it can serve as an indicator of how accurate the measured intensities/counts from the images are, and if it is over or under detecting intensity in every region.
 
@@ -47,7 +47,7 @@ The last part of this code is to use the two calibrations on the real data, plot
 ![Calibrated real data](plots/carbon.center=650.jpg)
 
 
-## Calculate Max Wavelength and plot
+## Calculate Max Wavelength and Plot
 
 To calculate the peaks of each emission line, a third degree polynomial fit was applied to the region right around the peak of each emission spectrum, and the location of the max was recorded. These polynomials can be seen below, along with the data plots and the maximum wavelengths.
 
